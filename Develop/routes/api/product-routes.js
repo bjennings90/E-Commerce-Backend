@@ -5,15 +5,19 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // include: [{model: db.Artist, attributes: ['name'], through: {attributes: []}}]
 // get all products
 router.get('/', (req, res) => {
-  Product.findAll({ include: [Category] }).then ((data) => {
-    res.send (data)
-  }).catch (console.error).then (res.send)
+  // product_id is null and category
+  Product.findAll({ include: [Category] }).then((data) => {
+    res.send(data)
+  }).catch(console.error).then(res.send)
   // find all products
   // be sure to include its associated Category and Tag data
 });
 
 // get one product
 router.get('/:id', (req, res) => {
+  Product.findOne({ where: { id: req.params.id } }).then(product => {
+    res.send(product)
+  }).catch(console.error).then(res.send)
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
 });
@@ -93,6 +97,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
+  Product.destroy({ where: { id: req.params.id } }).then(() => res.send(true));
   // delete one product by its `id` value
 });
 
